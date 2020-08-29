@@ -30,9 +30,9 @@ defmodule TREE do
       iex> tree.root
       %TREE.NODE{left: nil, value: 0, right: nil}
 
-      iex> tree = TREE.new([0, 1])
+      iex> tree = TREE.new([3, 2])
       iex> tree.root
-      %TREE.NODE{left: nil, value: 0, right: %TREE.NODE{left: nil, value: 1, right: nil}}
+      %TREE.NODE{left: %TREE.NODE{left: nil, value: 2, right: nil}, value: 3, right: nil }
   """
   @spec new([element()], compare()) :: tree()
   def new(elements \\ [], compare \\ fn a, b -> a - b end)
