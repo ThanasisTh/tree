@@ -43,14 +43,25 @@ defmodule TREE.Endpoint do
     Poison.encode!(%{error: "Expected Payload: { 'events': [...] }"})
   end
 
-  post "/new_tree" do
+  # post "/new_tree" do
+  #   {status, body} =
+  #     case conn.body_params do
+  #       %{"elements" => elements} -> {200, create_tree(elements)}
+  #       _ -> {422, missing_events()}
+  #     end
+
+  #   send_resp(conn |> put_resp_content_type("application/json"), status, body)
+  # end
+
+  post "/insert" do
     {status, body} =
       case conn.body_params do
-        %{"elements" => elements} -> {200, create_tree(elements)}
+        %{"value" => elements, "tree" => nil} -> {200, create_tree(elements)}
+        %{"value" => elements, "tree" => tree} -> {200, insert_elements(tree, elements)}
         _ -> {422, missing_events()}
       end
 
-    send_resp(conn |> put_resp_content_type("application/json"), status, body)
+    send_resp(conn, status, body)
   end
 
   defp create_tree(elements) do
@@ -60,14 +71,11 @@ defmodule TREE.Endpoint do
     Poison.encode!(response)
   end
 
-  post "/insert" do
-    {status, body} =
-      case conn.body_params do
-        %{"elements" => elements, "tree" => tree} -> {200, Poison.encode!(TREE.insert(tree, elements))}
-        _ -> {422, missing_events()}
-      end
-
-    send_resp(conn, status, body)
+  defp insert_elements(tree, elements) do
+    # Insert given elements to given tree.
+    tree = TREE.insert(tree, elements)
+    response = %{"tree" => tree.root}
+    Poison.encode!(response)
   end
 
   match _ do

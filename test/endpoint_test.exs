@@ -55,7 +55,19 @@ defmodule TREE.EndpointTest do
 
   test "it creates a new tree" do
     # Create a test connection
-    conn = conn(:post, "/new_tree", %{elements: [3, 2]} )
+    conn = conn(:post, "/insert", %{value: [3], tree: nil} )
+
+    # Invoke the plug
+    conn = TREE.Endpoint.call(conn, @opts)
+
+    # Assert the response
+    assert conn.status == 200
+    assert conn.resp_body == Poison.encode!(%{"tree" => %TREE.NODE{left: nil, value: 3, right: nil}})
+  end
+
+  test "it inserts elements" do
+    # Create a test connection
+    conn = conn(:post, "/insert", %{value: 2, tree: TREE.new([3], fn a, b -> a <= b end)} )
 
     # Invoke the plug
     conn = TREE.Endpoint.call(conn, @opts)
@@ -64,7 +76,5 @@ defmodule TREE.EndpointTest do
     assert conn.status == 200
     assert conn.resp_body == Poison.encode!(%{"tree" => %TREE.NODE{left: nil, right: %TREE.NODE{left: nil, right: nil, value: 2}, value: 3}})
   end
-
-
 
 end
