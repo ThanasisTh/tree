@@ -7,14 +7,7 @@ defmodule TREE.Endpoint do
   plug(Plug.Parsers, parsers: [:json], json_decoder: Poison)
   plug :dispatch
 
-  get "/hello" do
-    send_resp(conn, 200, "world!!")
-  end
-
-  get "/ping" do
-    send_resp(conn, 200, "pong!")
-  end
-
+  # --------------------------- TEST ENDPOINTS ----------------------------
   # Handle incoming events, if the payload is the right shape, process the
   # events, otherwise return an error.
   post "/events" do
@@ -37,6 +30,15 @@ defmodule TREE.Endpoint do
     Poison.encode!(%{response: "Please Send Some Events!"})
   end
 
+  get "/ping" do
+    send_resp(conn, 200, "pong!")
+  end
+  #----------------------------------------------------------------------------
+
+
+
+
+  # ---------------------------- USED ENDPOINTS -------------------------------
   defp missing_events do
     Poison.encode!(%{error: "Expected Payload: { 'events': [...] }"})
   end
