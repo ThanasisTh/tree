@@ -7,7 +7,7 @@ defmodule TREE do
 
   defstruct [:compare, :root]
 
-  @typedoc "Data stored in a node."
+  @typedoc "value stored in a node."
   @type element :: term()
 
   @typedoc "Checks whether current node should be stored in right or left subtree (comparing function)."
@@ -21,18 +21,18 @@ defmodule TREE do
 
   ## Parameters
 
-    - elements: List of data to be stored in tree.
+    - elements: List of value to be stored in tree.
     - compare: Comparing function
 
   ## Examples
 
-      iex> tree = BST.new([0])
+      iex> tree = TREE.new([0])
       iex> tree.root
-      %BST.Node{left: nil, value: 0, right: nil}
+      %TREE.NODE{left: nil, value: 0, right: nil}
 
-      iex> tree = BST.new([0, 1])
+      iex> tree = TREE.new([0, 1])
       iex> tree.root
-      %BST.Node{data: 0, left: nil, right: %BST.Node{data: 1, left: nil, right: nil}}
+      %TREE.NODE{left: nil, value: 0, right: %TREE.NODE{left: nil, value: 1, right: nil}}
   """
   @spec new([element()], compare()) :: tree()
   def new(elements \\ [], compare \\ fn a, b -> a - b end)
@@ -52,10 +52,10 @@ defmodule TREE do
   Defaults to replacing with new element.
 
   ## Examples
-      iex> tree = BST.new([1])
-      iex> tree = BST.insert(tree, 2)
+      iex> tree = TREE.new([1])
+      iex> tree = TREE.insert(tree, 2)
       iex> tree.root
-      %BST.Node{data: 1, left: nil, right: %BST.Node{data: 2, left: nil, right: nil}}
+      %TREE.NODE{left: nil, value: 1, right: %TREE.NODE{value: 2, left: nil, right: nil}}
   """
   @spec insert(tree(), element(), (element(), element() -> element())) :: tree()
   def insert(%__MODULE__{} = tree, element, fun \\ fn _a, b -> b end) do
