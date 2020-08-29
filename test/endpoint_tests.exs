@@ -1,6 +1,9 @@
-defmodule TRE.EndpointTest do
+defmodule TREE.EndpointTest do
   use ExUnit.Case, async: true
   use Plug.Test
+
+  require Logger
+  # doctest TREE
 
   @opts TREE.Endpoint.init([])
 
@@ -19,7 +22,7 @@ defmodule TRE.EndpointTest do
 
   test "it returns 200 with a valid payload" do
     # Create a test connection
-    conn = conn(:post, "/events", %{events: [%{}]})
+    conn = conn(:post, "/events", %{events: [%{}, %{}]} )
 
     # Invoke the plug
     conn = TREE.Endpoint.call(conn, @opts)
@@ -49,4 +52,19 @@ defmodule TRE.EndpointTest do
     # Assert the response
     assert conn.status == 404
   end
+
+  test "it creates a new tree" do
+    # Create a test connection
+    conn = conn(:post, "/new_tree", %{elements: [3, 2]} )
+
+    # Invoke the plug
+    conn = TREE.Endpoint.call(conn, @opts)
+
+    # Assert the response
+    assert conn.status == 200
+    assert conn.resp_body == Poison.encode!(%{"tree" => %TREE.NODE{left: nil, right: %TREE.NODE{left: nil, right: nil, value: 2}, value: 3}})
+  end
+
+
+
 end

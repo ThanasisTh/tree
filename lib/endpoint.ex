@@ -1,5 +1,6 @@
 defmodule TREE.Endpoint do
   use Plug.Router
+  require Logger
 
   plug Plug.Logger
   plug :match
@@ -40,10 +41,32 @@ defmodule TREE.Endpoint do
     Poison.encode!(%{error: "Expected Payload: { 'events': [...] }"})
   end
 
+  post "/new_tree" do
+    {status, body} =
+      case conn.body_params do
+        %{"elements" => elements} -> {200, create_tree(elements)}
+        _ -> {422, missing_events()}
+      end
 
+    send_resp(conn |> put_resp_content_type("application/json"), status, body)
+  end
 
+  defp create_tree(elements) do
+    # Use given elements to initialize a tree.
+    tree = TREE.new(elements, fn a, b -> a <= b end)
+    response = %{"tree" => tree.root}
+    Poison.encode!(response)
+  end
 
+  post "/insert" do
+    {status, body} =
+      case conn.body_params do
+        %{"elements" => elements, "tree" => tree} -> {200, Poison.encode!(TREE.insert(tree, elements))}
+        _ -> {422, missing_events()}
+      end
 
+    send_resp(conn, status, body)
+  end
 
   match _ do
     send_resp(conn, 404, "oops")

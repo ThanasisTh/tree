@@ -2,6 +2,7 @@ defmodule TREE.Application do
   @moduledoc "OTP Application specification for WebhookProcessor"
 
   use Application
+  require Logger
 
   def start(_type, _args) do
     # List all child processes to be supervised
