@@ -1,4 +1,4 @@
-# TREE
+# TREE [![Build Status](https://travis-ci.com/ThanasisTh/tree.svg?token=p2Tydfti7qXzfY1VPiTq&branch=master)](https://travis-ci.com/ThanasisTh/tree)
 
 Elixir implementation of a basic binary tree with the insert operation, as well as a basic REST API using plug + tests. 
 
