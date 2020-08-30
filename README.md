@@ -2,6 +2,12 @@
 
 Elixir implementation of a basic binary tree with the insert operation, as well as a basic REST API using plug + tests. 
 
+The application is not dockerized. After downloading, it can be run locally by executing  
+```shell 
+mix run --no-halt 
+```
+ from inside the mix project. The API can be used with Postman.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
