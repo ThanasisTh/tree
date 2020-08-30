@@ -1,6 +1,6 @@
 # TREE
 
-**TODO: Add description**
+Elixir implementation of a basic binary tree with the insert operation, as well as a basic REST API using plug + tests. 
 
 ## Installation
 
